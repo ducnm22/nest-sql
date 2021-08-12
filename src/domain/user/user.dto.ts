@@ -5,6 +5,7 @@ import {
     IsNotEmpty,
     IsOptional,
     IsString,
+    MinLength,
 } from 'class-validator';
 
 import { BaseListFilterPayload } from '@src/domain/helper/base.dto';
@@ -31,6 +32,11 @@ export class CreateUserPayload {
     @IsNotEmpty()
     @IsDateString()
     dob: Date;
+
+    @IsNotEmpty()
+    @IsString()
+    @MinLength(8)
+    password: string;
 
     @IsOptional()
     @IsDate()

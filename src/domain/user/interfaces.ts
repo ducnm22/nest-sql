@@ -1,12 +1,12 @@
 import { BaseListFilterInfo } from '@src/domain/helper/base.dto';
-import { UserEntity } from './user.entity';
-
+import { UserInDb } from './user.entity';
 export interface CreateUserInfo {
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     email: string;
-    dob: Date;
+    dob?: Date;
     address?: string;
+    hashedPassword: string;
     createdDate?: Date;
 }
 
@@ -17,7 +17,7 @@ export interface ListUsersInfo extends BaseListFilterInfo {
 }
 
 export interface IUserRepository {
-    createAndSave: (createUserInfo: CreateUserInfo) => Promise<UserEntity>;
-    findByEmail: (email: string) => Promise<UserEntity | null>;
-    listUsers: (filter: ListUsersInfo) => Promise<[UserEntity[], number]>;
+    createAndSave: (createUserInfo: CreateUserInfo) => Promise<UserInDb>;
+    findByEmail: (email: string) => Promise<UserInDb | null>;
+    listUsers: (filter: ListUsersInfo) => Promise<[UserInDb[], number]>;
 }
