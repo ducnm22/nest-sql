@@ -6,8 +6,10 @@ import {
     ListUsersPayload,
     UserEntity,
 } from '@src/domain/user';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('users')
 export class UserController {
     constructor(
         private readonly createUserUsecase: CreateUserUsecase,
@@ -15,6 +17,7 @@ export class UserController {
     ) {}
 
     @Post()
+    @ApiBearerAuth()
     async createUser(
         @Body() createUserPayload: CreateUserPayload,
     ): Promise<UserEntity> {
@@ -22,8 +25,8 @@ export class UserController {
     }
 
     @Get()
+    @ApiBearerAuth()
     async listUsers(@Query() filter: ListUsersPayload) {
-        console.log('>>>>>>filterrr', filter);
         return await this.listUsersUsecase.processRequest(filter);
     }
 }

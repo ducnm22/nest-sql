@@ -39,3 +39,9 @@ export class UserEntity extends UserBase {
     @IsString()
     id: string;
 }
+
+export class UserInDb extends UserEntity {
+    @AutoMap()
+    @IsString()
+    hashedPassword: string;
+}

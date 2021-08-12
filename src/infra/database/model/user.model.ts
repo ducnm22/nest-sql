@@ -9,11 +9,11 @@ export class User {
     id: string;
 
     @AutoMap()
-    @Column()
+    @Column({ default: '' })
     firstName: string;
 
     @AutoMap()
-    @Column()
+    @Column({ default: '' })
     lastName: string;
 
     @AutoMap()
@@ -21,11 +21,11 @@ export class User {
     email: string;
 
     @AutoMap()
-    @Column()
+    @Column({ default: null })
     dob: Date;
 
     @AutoMap()
-    @Column()
+    @Column({ default: '' })
     address: string;
 
     @AutoMap()
@@ -33,8 +33,12 @@ export class User {
     isActive: boolean;
 
     @AutoMap()
+    @Column({ default: null })
+    hashedPassword: string;
+
+    @AutoMap()
     @Column()
-    createdDate: Date;
+    createdDate: Date = new Date();
 
     @AutoMap()
     @Column({ default: null })
