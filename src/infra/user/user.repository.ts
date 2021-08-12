@@ -9,6 +9,7 @@ import {
     IUserRepository,
     ListUsersInfo,
     UserEntity,
+    UserInDb,
 } from '@src/domain/user';
 
 import { Mapper } from '@nartc/automapper';
@@ -19,12 +20,13 @@ export class UserRepository
     extends AbstractRepository<UserModel>
     implements IUserRepository
 {
-    async createAndSave(userInfo: CreateUserInfo): Promise<UserEntity> {
+    async createAndSave(userInfo: CreateUserInfo): Promise<UserInDb> {
         const newUser = new UserModel();
 
         newUser.firstName = userInfo.firstName;
         newUser.lastName = userInfo.lastName;
         newUser.email = userInfo.email;
+        newUser.hashedPassword = userInfo.hashedPassword;
         newUser.dob = userInfo.dob;
         newUser.address = userInfo.address;
 
@@ -32,10 +34,10 @@ export class UserRepository
         newUser.createdDate = userInfo.createdDate;
 
         const createdUser = await this.repository.save(newUser);
-        return Mapper.map(createdUser, UserEntity);
+        return Mapper.map(createdUser, UserInDb);
     }
 
-    async findByEmail(email: string): Promise<UserEntity | null> {
+    async findByEmail(email: string): Promise<UserInDb | null> {
         // get user model instance by email
         const res = await this.repository.find({
             where: {
@@ -47,10 +49,10 @@ export class UserRepository
         if (res.length < 1) return null;
 
         // user is first element in array since id is unique
-        return Mapper.map(res[0], UserEntity);
+        return Mapper.map(res[0], UserInDb);
     }
 
-    async listUsers(filter: ListUsersInfo): Promise<[UserEntity[], number]> {
+    async listUsers(filter: ListUsersInfo): Promise<[UserInDb[], number]> {
         const query: FindConditions<UserModel> | ObjectLiteral = {};
 
         if (filter.firstName) {
@@ -71,6 +73,6 @@ export class UserRepository
             take: filter.limit,
         });
 
-        return [users.map((u) => Mapper.map(u, UserEntity)), count];
+        return [users.map((u) => Mapper.map(u, UserInDb)), count];
     }
 }
