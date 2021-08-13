@@ -1,4 +1,6 @@
+import APIConfig from '@src/config/api.config';
 import { AuthService } from './auth.service';
+import { ConfigType } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { LocalStrategy } from './local.strategy';
@@ -11,9 +13,14 @@ import { UserRepository } from '@src/infra/user/user.repository';
     imports: [
         TypeOrmModule.forFeature([UserRepository]),
         PassportModule,
-        JwtModule.register({
-            secret: 'APP_JWT_SECRET',
-            signOptions: { expiresIn: '2days' },
+        JwtModule.registerAsync({
+            useFactory: async (apiConfgi: ConfigType<typeof APIConfig>) => ({
+                secret: apiConfgi.auth.jwt_secret,
+                signOptions: {
+                    expiresIn: apiConfgi.auth.token_expire_in,
+                },
+            }),
+            inject: [APIConfig.KEY],
         }),
     ],
     providers: [AuthService, LocalStrategy, JwtStrategy],

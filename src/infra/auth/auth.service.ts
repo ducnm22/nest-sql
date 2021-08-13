@@ -1,6 +1,8 @@
 import { compare, hash } from 'bcrypt';
 
-import { Injectable } from '@nestjs/common';
+import APIConfig from '@src/config/api.config';
+import { ConfigType } from '@nestjs/config';
+import { Injectable, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Mapper } from '@nartc/automapper';
 import { UserEntity } from '@src/domain/user';
@@ -11,6 +13,8 @@ export class AuthService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService,
+        @Inject(APIConfig.KEY)
+        private readonly apiConfig: ConfigType<typeof APIConfig>,
     ) {}
 
     /**
@@ -19,7 +23,10 @@ export class AuthService {
      * @returns {Promise<string>}
      */
     async hashPassword(password: string): Promise<string> {
-        const hashedpassword = await hash(password, 10);
+        const hashedpassword = await hash(
+            password,
+            this.apiConfig.auth.password_hash_salt,
+        );
 
         return hashedpassword;
     }
