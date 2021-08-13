@@ -15,8 +15,12 @@ Default environment variables in `.env-sample`
     ```bash
     $ npm install
     ```
+-   initial env:
+    ```
+    $ npm run init-env
+    ```
 -   run app in dev mode:
-    `bash $ yarn run start:dev `
+    `bash $ npm run start:dev `
 
     app will be available at <localhost:3000/docs>
 
