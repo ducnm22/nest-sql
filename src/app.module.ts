@@ -14,6 +14,7 @@ import APIConfig from '@src/config/api.config';
 import APPConfig from '@src/config/app.config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from '@src/infra/auth/auth.module';
+import CacheConfig from '@src/config/cache.config';
 import DBConfig from '@src/config/database.config';
 import { JwtAuthGuard } from '@src/interfaces/shared/guards/jwtAuth.guard';
 import { Module } from '@nestjs/common';
@@ -22,7 +23,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
     imports: [
         ConfigModule.forRoot({
-            load: [APIConfig, APPConfig, DBConfig],
+            load: [APIConfig, APPConfig, CacheConfig, DBConfig],
             isGlobal: true,
         }),
         TypeOrmModule.forRootAsync({
