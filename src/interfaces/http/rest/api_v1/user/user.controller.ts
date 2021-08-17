@@ -1,6 +1,14 @@
-import { Body, Controller, Get, Query, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Query,
+    Post,
+    UseInterceptors,
+} from '@nestjs/common';
 import { CreateUserUsecase } from '@src/app/user/createUser/createUser.usecase';
 import { ListUsersUsecase } from '@src/app/user/listUsers/listUsers.usecase';
+import { CacheInterceptor } from '@src/interfaces/interceptor/cache.interceptor';
 import {
     CreateUserPayload,
     ListUsersPayload,
@@ -10,6 +18,7 @@ import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('users')
+@UseInterceptors(CacheInterceptor)
 export class UserController {
     constructor(
         private readonly createUserUsecase: CreateUserUsecase,
